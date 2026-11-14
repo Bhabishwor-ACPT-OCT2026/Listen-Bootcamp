@@ -2,42 +2,15 @@
 main.py - Gradio UI for the Ironhack Podcast Studio.
 
 Connects the pipeline:
-    notes -> load_notes() -> generate_script() -> generate_audio() -> UI
+    notes -> clean_notes() -> generate_podcast_script() -> generate_audio() -> UI
 """
-
-import tempfile
-import wave
-from pathlib import Path
 
 import gradio as gr
 
-from models import PodcastSettings, PodcastScript
+from models import PodcastSettings
 from data_processor import clean_notes, DataProcessingError
 from llm_processor import generate_podcast_script, LLMProcessingError
-
-
-# ============================================================
-# PLACEHOLDERS
-# These fake functions let us test the UI before the real
-# modules are ready. Once they are, delete this block and use:
-#
-#   from data_processor import load_notes
-#   from llm_processor import generate_script
-#   from tts_generator import generate_audio
-# ============================================================
-
-
-
-def generate_audio(script: PodcastScript) -> str:
-    """Placeholder for Angello's version (calls TTS).
-    Writes one second of silence so the audio player has something to show."""
-    path = Path(tempfile.gettempdir()) / "placeholder.wav"
-    with wave.open(str(path), "wb") as f:
-        f.setnchannels(1)
-        f.setsampwidth(2)
-        f.setframerate(24000)
-        f.writeframes(b"\x00\x00" * 24000)
-    return str(path)
+from tts_generator import generate_audio
 
 
 # ============================================================
