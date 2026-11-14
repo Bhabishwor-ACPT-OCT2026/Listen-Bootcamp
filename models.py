@@ -1,11 +1,10 @@
-
 """Shared Pydantic models for the Podcast Studio team pipeline."""
 
 from pydantic import BaseModel, Field
 
 
 class PodcastSettings(BaseModel):
-    """Optional settings supplied by the user through the Gradio interface."""
+    """Settings supplied through the Gradio interface."""
 
     lesson_context: str = ""
     funny_mode: bool = False

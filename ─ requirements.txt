@@ -1,6 +1,0 @@
-gradio
-openai
-elevenlabs
-pydantic
-python-dotenv
-fastapi
