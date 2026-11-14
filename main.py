@@ -12,6 +12,8 @@ from pathlib import Path
 import gradio as gr
 
 from models import PodcastSettings, PodcastScript
+from data_processor import clean_notes, DataProcessingError
+from llm_processor import generate_podcast_script, LLMProcessingError
 
 
 # ============================================================
@@ -24,18 +26,6 @@ from models import PodcastSettings, PodcastScript
 #   from tts_generator import generate_audio
 # ============================================================
 
-def load_notes(raw_text: str) -> str:
-    """Placeholder for Babishwor's version (cleans and validates the notes)."""
-    return raw_text.strip()
-
-
-def generate_script(text: str, settings: PodcastSettings) -> PodcastScript:
-    """Placeholder for Babishwor's version (calls the LLM)."""
-    mode = "funny" if settings.funny_mode else "normal"
-    return PodcastScript(
-        title="Test Episode",
-        script=f"[{mode} mode] Placeholder script based on: {text[:100]}",
-    )
 
 
 def generate_audio(script: PodcastScript) -> str:
@@ -62,11 +52,15 @@ def run_pipeline(raw_text: str, lesson_context: str, funny_mode: bool):
 
     try:
         settings = PodcastSettings(lesson_context=lesson_context, funny_mode=funny_mode)
-        text = load_notes(raw_text)
-        script = generate_script(text, settings)
+        text = clean_notes(raw_text)
+        script = generate_podcast_script(text, settings)
         audio_path = generate_audio(script)
     except gr.Error:
         raise
+    except DataProcessingError as e:
+        raise gr.Error(str(e))
+    except LLMProcessingError as e:
+        raise gr.Error(str(e))
     except Exception as e:
         raise gr.Error(f"Something went wrong: {e}")
 
