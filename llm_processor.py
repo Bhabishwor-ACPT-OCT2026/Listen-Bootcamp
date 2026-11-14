@@ -50,10 +50,13 @@ def generate_podcast_script(
     if client is None:
         try:
             from dotenv import load_dotenv
+            import truststore
+
+            truststore.inject_into_ssl()
             from openai import OpenAI
         except ImportError as exc:
             raise LLMProcessingError(
-                "Install the LLM dependencies with: pip install openai python-dotenv"
+                "Install the LLM dependencies with: pip install openai python-dotenv truststore"
             ) from exc
 
         load_dotenv()
