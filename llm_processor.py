@@ -10,12 +10,16 @@ class LLMProcessingError(ValueError):
     """Raised when the LLM cannot produce a podcast script."""
 
 
-BASE_INSTRUCTIONS = """You are an expert educational podcast scriptwriter.
-Transform the supplied lesson notes into an enjoyable, accurate podcast for
-Ironhack students.
+BASE_INSTRUCTIONS = """Speak like a friendly tutor explaining the lesson to a beginner.
+- Explain technical terms clearly and use examples from the notes.
+- Include short recap moments to reinforce the main ideas.
 
 Requirements:
-- Write a spoken script of approximately 2 to 3 minutes, around 300 to 450 words.
+- Aim for approximately 5 to 7 minutes, around 750 to 1,000 words.
+- Cover every major topic in the notes, including important definitions,
+  examples and practical steps.
+- Shorten repetition rather than removing important concepts.
+- If the notes are brief, keep the podcast brief rather than inventing content.
 - Start with a concise title on its own line in the format: TITLE: ...
 - Then write natural spoken paragraphs with a short introduction, clear
   transitions, the main lesson points, and a closing recap.
